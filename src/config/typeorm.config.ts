@@ -20,7 +20,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       database: process.env.DATABASE_NAME,
       password: process.env.DATABASE_PASSWORD,
       entities: ['dist/**/*.entity.js'],
-      migrations: ['dist/src/database/migrations/*.js'],
+      migrations: ['dist/database/migrations/*.js'],
       extra: {
         charset: 'utf8mb4_unicode_ci',
       },
@@ -37,7 +37,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   database: process.env.DATABASE_NAME,
   password: process.env.DATABASE_PASSWORD,
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/src/database/migrations/*.js'],
+  migrations: ['dist/database/migrations/*.js'],
 
   extra: {
     charset: 'utf8mb4_unicode_ci',
@@ -54,6 +54,6 @@ export const dataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   password: process.env.DATABASE_PASSWORD,
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/src/database/migrations/*.js'],
+  migrations: ['dist/database/migrations/*.js'],
   migrationsRun: true,
 });
