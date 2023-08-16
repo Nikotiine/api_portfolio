@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,4 +14,7 @@ export class Base {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ default: true })
+  isActive: boolean;
 }

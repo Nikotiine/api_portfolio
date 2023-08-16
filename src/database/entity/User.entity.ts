@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { Base } from './Base';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from '../../enum/UserRole.enum';
 @Entity()
 @Unique(['email'])
 export class User extends Base {
@@ -9,6 +10,9 @@ export class User extends Base {
 
   @Column()
   password: string;
+
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role: UserRole;
 
   @BeforeInsert()
   async setPassword(password: string): Promise<void> {

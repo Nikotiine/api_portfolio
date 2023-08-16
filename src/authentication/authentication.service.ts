@@ -4,6 +4,7 @@ import { User } from '../database/entity/User.entity';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Token } from '../dto/Token.dto';
 @Injectable()
 export class AuthenticationService {
   private salt: number;
@@ -16,12 +17,11 @@ export class AuthenticationService {
   public async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new BadRequestException('Invalid Credentials');
+      throw new BadRequestException('002');
     }
-
     return user;
   }
-  public async generateToken(user: User): Promise<any> {
+  public async generateToken(user: User): Promise<Token> {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
