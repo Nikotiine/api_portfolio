@@ -3,10 +3,10 @@ import { Base } from './Base';
 import * as bcrypt from 'bcrypt';
 import { UserRole } from '../../enum/UserRole.enum';
 @Entity()
-@Unique(['email'])
+@Unique(['username'])
 export class User extends Base {
   @Column()
-  email: string;
+  username: string;
 
   @Column()
   password: string;

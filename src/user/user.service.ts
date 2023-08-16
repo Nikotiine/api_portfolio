@@ -14,27 +14,27 @@ export class UserService {
   public async createUser(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.userRepository.findOne({
       where: {
-        email: user.email,
+        username: user.username,
       },
     });
     if (isExist) {
       throw new BadRequestException('001');
     }
     const entity = this.userRepository.create({
-      email: user.email,
+      username: user.username,
       password: user.password,
     });
     const created = await this.userRepository.save(entity);
 
     return {
       id: created.id,
-      email: created.email,
+      username: created.username,
       role: created.role,
     };
   }
-  public async findByEmail(email: string): Promise<User | null> {
+  public async findByUsername(username: string): Promise<User | null> {
     return this.userRepository.findOneBy({
-      email: email,
+      username: username,
       isActive: true,
     });
   }

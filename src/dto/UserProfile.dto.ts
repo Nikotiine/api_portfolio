@@ -6,7 +6,7 @@ export class UserProfileDto {
   id: number;
 
   @ApiProperty()
-  email: string;
+  username: string;
 
   @ApiProperty({ enum: UserRole })
   role: UserRole;

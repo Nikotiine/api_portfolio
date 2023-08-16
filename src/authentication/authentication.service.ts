@@ -14,15 +14,15 @@ export class AuthenticationService {
   ) {
     this.salt = parseInt(process.env.BCRYPT_SALT);
   }
-  public async validateUser(email: string, password: string): Promise<User> {
-    const user = await this.userService.findByEmail(email);
+  public async validateUser(username: string, password: string): Promise<User> {
+    const user = await this.userService.findByUsername(username);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new BadRequestException('002');
     }
     return user;
   }
   public async generateToken(user: User): Promise<Token> {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };
