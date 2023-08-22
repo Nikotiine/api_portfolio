@@ -18,12 +18,12 @@ export class UserController {
   @ApiBody({
     type: UserRegisterDto,
     description:
-      'Pour voir la description du body merci de regarder dabns les DTO => UserRegisterDto',
+      'Pour voir la description du body merci de regarder dans les DTO => UserRegisterDto',
   })
   @ApiCreatedResponse({
     type: UserProfileDto,
     description:
-      'Pour voir la description de la reponse merci de regarder dabns les DTO => UserProfileDto',
+      'Pour voir la description de la reponse merci de regarder dans les DTO => UserProfileDto',
   })
   @ApiOperation({
     summary: "Point d'entrée pour creer un nouvel utilisateur",
