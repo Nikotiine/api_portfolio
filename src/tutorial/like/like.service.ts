@@ -12,14 +12,14 @@ export class LikeService {
   ) {}
 
   public async likeTutorial(like: LikeCreateDto): Promise<LikeDto> {
-    const isExist = await this.likeRepository.findOne({
-      where: {
-        tutorialId: like.tutorialId,
-        user: like.user,
+    const isExist = await this.likeRepository.findOneBy({
+      tutorialId: like.tutorialId,
+      user: {
+        id: like.user.id,
       },
     });
     if (isExist) {
-      throw new BadRequestException('002');
+      throw new BadRequestException('003');
     }
     const entity = this.likeRepository.create(like);
     const created = await this.likeRepository.save(entity);
@@ -28,5 +28,23 @@ export class LikeService {
       tutorialId: created.tutorialId,
       user: created.user,
     };
+  }
+
+  public async findAllLikeForAllTutorials(): Promise<LikeDto[]> {
+    const likes: LikeDto[] = await this.likeRepository.find({
+      where: {
+        isActive: true,
+      },
+      relations: {
+        user: true,
+      },
+    });
+    return likes.map((like) => {
+      return {
+        id: like.id,
+        tutorialId: like.tutorialId,
+        user: like.user,
+      };
+    });
   }
 }

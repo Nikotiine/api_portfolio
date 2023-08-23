@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -29,5 +29,14 @@ export class LikeController {
     @Body() like: LikeCreateDto,
   ): Promise<LikeDto> {
     return this.likeService.likeTutorial(like);
+  }
+
+  @Get('tutorials')
+  @ApiOperation({ summary: 'Recupere tous les likes des tuto' })
+  @ApiCreatedResponse({
+    type: [LikeDto],
+  })
+  public async getAllLikesOfTutorials(): Promise<LikeDto[]> {
+    return this.likeService.findAllLikeForAllTutorials();
   }
 }
