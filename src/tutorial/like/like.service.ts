@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from '../../database/entity/Like.entity';
 import { Repository } from 'typeorm';
@@ -12,17 +12,21 @@ export class LikeService {
   ) {}
 
   public async likeTutorial(like: LikeCreateDto): Promise<LikeDto> {
-    const isExist = await this.likeRepository.findOneBy({
+    const isExist: Like = await this.likeRepository.findOneBy({
       tutorialId: like.tutorialId,
       user: {
         id: like.user.id,
       },
     });
+    let created: Like = null;
     if (isExist) {
-      throw new BadRequestException('003');
+      isExist.isActive = !isExist.isActive;
+      created = await this.likeRepository.save(isExist);
+    } else {
+      const newEntity: Like = this.likeRepository.create(like);
+      created = await this.likeRepository.save(newEntity);
     }
-    const entity = this.likeRepository.create(like);
-    const created = await this.likeRepository.save(entity);
+
     return {
       id: created.id,
       tutorialId: created.tutorialId,
