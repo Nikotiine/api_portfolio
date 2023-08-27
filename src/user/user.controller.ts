@@ -26,7 +26,9 @@ export class UserController {
       'Pour voir la description de la reponse merci de regarder dans les DTO => UserProfileDto',
   })
   @ApiOperation({
-    summary: "Point d'entrée pour creer un nouvel utilisateur",
+    summary: "Creation d' un nouvel utilisateur",
+    description:
+      "La creation d'un nouveau compte utilisateur avec l'objet UserRegisterDto dans le body",
   })
   public async register(
     @Body() user: UserRegisterDto,

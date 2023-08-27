@@ -18,6 +18,7 @@ export class UserService {
       },
     });
     if (isExist) {
+      //Si le nom d'utlisateur est deja pris retourne une erreur avec le code 001 pour l'affichage dans le front-endnpm run dev
       throw new BadRequestException('001');
     }
     const entity = this.userRepository.create({

@@ -30,9 +30,9 @@ export class AuthenticationController {
       'Pour la description de body merci de regarder la section DTO => UserCredentialDto',
   })
   @ApiOperation({
-    summary: "Point d'access à l'API",
+    summary: "Point de connexion à l'API",
     description:
-      "Une fois la validation du couple email/password faite, retourne un token d'access",
+      'Une fois la validation du couple username/password faite, retourne un JWT',
   })
   @ApiCreatedResponse({
     type: Token,
@@ -52,11 +52,12 @@ export class AuthenticationController {
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
   @ApiOperation({
-    summary: 'Jwt authentifacation',
+    summary: 'Profil utilisateur',
     description: "Point d'entree pour l'autentification du token",
   })
   @ApiCreatedResponse({
-    description: 'The access token is validate',
+    description:
+      "Retourne le profil de l'utilisateur apres validation du token",
     type: UserProfileDto,
   })
   async me(@Request() req): Promise<UserProfileDto> {
