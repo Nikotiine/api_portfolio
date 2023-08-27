@@ -3,6 +3,8 @@ import { Base } from './Base';
 import * as bcrypt from 'bcrypt';
 import { UserRole } from '../../enum/UserRole.enum';
 import { Like } from './Like.entity';
+import { Comment } from './Comment.entity';
+
 @Entity()
 @Unique(['username'])
 export class User extends Base {
@@ -17,6 +19,10 @@ export class User extends Base {
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
+
   @BeforeInsert()
   async setPassword(password: string): Promise<void> {
     const salt = await bcrypt.genSalt();

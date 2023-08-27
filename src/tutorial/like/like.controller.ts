@@ -30,10 +30,8 @@ export class LikeController {
     description:
       'Pour voir la description de la reponse merci de regarder dans les DTO => LikeDto',
   })
-  public async giveLikeForTutorial(
-    @Body() like: LikeCreateDto,
-  ): Promise<LikeDto> {
-    return this.likeService.likeTutorial(like);
+  public async likeTutorial(@Body() like: LikeCreateDto): Promise<LikeDto> {
+    return this.likeService.create(like);
   }
 
   @Get('tutorials')
@@ -47,6 +45,6 @@ export class LikeController {
       'Pour voir la description de la reponse merci de regarder dans les DTO => LikeDto',
   })
   public async getAllLikesOfTutorials(): Promise<LikeDto[]> {
-    return this.likeService.findAllLikeForAllTutorials();
+    return this.likeService.findAllLikesOfTutorials();
   }
 }

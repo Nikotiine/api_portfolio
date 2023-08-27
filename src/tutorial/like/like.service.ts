@@ -11,7 +11,7 @@ export class LikeService {
     @InjectRepository(Like) private likeRepository: Repository<Like>,
   ) {}
 
-  public async likeTutorial(like: LikeCreateDto): Promise<LikeDto> {
+  public async create(like: LikeCreateDto): Promise<LikeDto> {
     const isExist: Like = await this.likeRepository.findOneBy({
       tutorialId: like.tutorialId,
       user: {
@@ -34,7 +34,7 @@ export class LikeService {
     };
   }
 
-  public async findAllLikeForAllTutorials(): Promise<LikeDto[]> {
+  public async findAllLikesOfTutorials(): Promise<LikeDto[]> {
     const likes: LikeDto[] = await this.likeRepository.find({
       where: {
         isActive: true,
