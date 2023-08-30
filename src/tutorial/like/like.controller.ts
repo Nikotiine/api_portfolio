@@ -22,7 +22,7 @@ export class LikeController {
     type: LikeCreateDto,
   })
   @ApiOperation({
-    summary: 'Like pour tutorials',
+    summary: "Post d'un like tutorials",
     description: "Mettre ou supprimer un like d'un tutorial",
   })
   @ApiCreatedResponse({
@@ -36,7 +36,7 @@ export class LikeController {
 
   @Get('tutorials')
   @ApiOperation({
-    summary: 'Recupere tous les likes',
+    summary: "Get all l' des likes",
     description: 'Recupere en bdd tout les likes actifs des tutoriels',
   })
   @ApiCreatedResponse({

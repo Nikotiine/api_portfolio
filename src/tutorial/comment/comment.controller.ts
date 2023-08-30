@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiOperation,
   ApiParam,
   ApiSecurity,
   ApiTags,
@@ -10,6 +20,7 @@ import { CommentDto } from '../../dto/Comment.dto';
 import { CommentCreateDto } from '../../dto/CommentCreate.dto';
 import { JwtAuthGuard } from '../../authentication/strategy/jwt-auth.guard';
 import { CommentService } from './comment.service';
+import { DeleteConfirmationDto } from '../../dto/DeleteConfirmation.dto';
 
 @Controller('api/comment')
 @ApiTags('Comment')
@@ -40,7 +51,30 @@ export class CommentController {
     description:
       'Pour voir la description de la reponse merci de regarder dans les DTO => CommentDto',
   })
+  @ApiOperation({
+    summary: 'Retourne les commentaires',
+    description: 'Renvoie tous les commentaires actif des tutoriels',
+  })
   public async findCommentForTutorial(): Promise<CommentDto[]> {
-    return this.commentService.findAllCommentByTutorial();
+    return this.commentService.findAll();
+  }
+
+  @Delete('tutorial/:id')
+  @ApiCreatedResponse({
+    type: DeleteConfirmationDto,
+    description:
+      "Message de confirmation de suppersion de l'objet. Pour plus de detail DTO => DeleteConfirmationDto",
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id du commentaire de tutoriel a supprimer',
+  })
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('JWT-Auth')
+  public async deleteComment(
+    @Request() req,
+    @Param('id') id: number,
+  ): Promise<DeleteConfirmationDto> {
+    return this.commentService.delete(req.user.id, id);
   }
 }

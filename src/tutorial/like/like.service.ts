@@ -11,6 +11,11 @@ export class LikeService {
     @InjectRepository(Like) private likeRepository: Repository<Like>,
   ) {}
 
+  /**
+   * Sauvegarde le like emis par l'utlisateur connecter
+   * Si le like est deja existant en bdd, change son attribut isActive (bolleen) sur le stauts opoposé
+   * @param like le like emis sous forme de LikeCreateDto
+   */
   public async create(like: LikeCreateDto): Promise<LikeDto> {
     const isExist: Like = await this.likeRepository.findOneBy({
       tutorialId: like.tutorialId,
@@ -34,6 +39,9 @@ export class LikeService {
     };
   }
 
+  /**
+   * Retourne tous les likes actifs pour tout les tutoriels
+   */
   public async findAllLikesOfTutorials(): Promise<LikeDto[]> {
     const likes: LikeDto[] = await this.likeRepository.find({
       where: {
