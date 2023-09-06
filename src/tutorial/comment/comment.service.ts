@@ -26,13 +26,14 @@ export class CommentService {
       comment: newComment.comment,
       createdAt: newComment.createdAt,
       author: newComment.author,
+      isActive: newComment.isActive,
     };
   }
 
   /**
    * Retourne tous le commentaires actifs
    */
-  public async findAll(): Promise<CommentDto[]> {
+  public async findAllActives(): Promise<CommentDto[]> {
     const comments: Comment[] = await this.commentRepository.find({
       where: {
         isActive: true,
@@ -51,6 +52,7 @@ export class CommentService {
         author: comment.author,
         createdAt: comment.createdAt,
         comment: comment.comment,
+        isActive: comment.isActive,
       };
     });
   }
@@ -87,5 +89,9 @@ export class CommentService {
         author: true,
       },
     });
+  }
+
+  public async findAll(): Promise<Comment[]> {
+    return this.commentRepository.find();
   }
 }

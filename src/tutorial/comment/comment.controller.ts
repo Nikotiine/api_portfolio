@@ -56,7 +56,7 @@ export class CommentController {
     description: 'Renvoie tous les commentaires actif des tutoriels',
   })
   public async findCommentForTutorial(): Promise<CommentDto[]> {
-    return this.commentService.findAll();
+    return this.commentService.findAllActives();
   }
 
   @Delete('tutorial/:id')

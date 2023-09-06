@@ -45,4 +45,8 @@ export class UserService {
       isActive: true,
     });
   }
+
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
 }

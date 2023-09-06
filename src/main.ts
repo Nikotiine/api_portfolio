@@ -7,7 +7,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('API Portfolio')
     .setDescription('API REST pour portfolio_v2 ')
-    .setVersion('0.0.3')
+    .setVersion(process.env.npm_package_version)
     .addBearerAuth(
       {
         type: 'http',

@@ -9,4 +9,7 @@ export class CommentDto extends CommentCreateDto {
     type: Date,
   })
   createdAt: Date;
+
+  @ApiProperty()
+  isActive: boolean;
 }
