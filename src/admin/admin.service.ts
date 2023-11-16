@@ -3,6 +3,7 @@ import { UserService } from '../user/user.service';
 import { UserProfileDto } from '../dto/UserProfile.dto';
 import { CommentService } from '../tutorial/comment/comment.service';
 import { CommentDto } from '../dto/Comment.dto';
+import { DeleteConfirmationDto } from '../dto/DeleteConfirmation.dto';
 
 @Injectable()
 export class AdminService {
@@ -35,5 +36,9 @@ export class AdminService {
         comment: comment.comment,
       };
     });
+  }
+
+  public async disableUser(id: number): Promise<DeleteConfirmationDto> {
+    return await this.userService.disableUser(id);
   }
 }

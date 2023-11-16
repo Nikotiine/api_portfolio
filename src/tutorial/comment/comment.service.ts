@@ -74,7 +74,7 @@ export class CommentService {
     const deleted: Comment = await this.commentRepository.save(comment);
     return {
       id: deleted.id,
-      deleted: !deleted.isActive,
+      deleted: true,
       object: 'Comment',
     };
   }
@@ -92,6 +92,10 @@ export class CommentService {
   }
 
   public async findAll(): Promise<Comment[]> {
-    return this.commentRepository.find();
+    return this.commentRepository.find({
+      relations: {
+        author: true,
+      },
+    });
   }
 }

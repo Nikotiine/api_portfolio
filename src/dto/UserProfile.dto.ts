@@ -10,4 +10,7 @@ export class UserProfileDto {
 
   @ApiProperty({ enum: UserRole })
   role: UserRole;
+
+  @ApiProperty()
+  isActive: boolean;
 }

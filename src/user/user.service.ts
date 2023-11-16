@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { UserProfileDto } from '../dto/UserProfile.dto';
+import { DeleteConfirmationDto } from '../dto/DeleteConfirmation.dto';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
       id: created.id,
       username: created.username,
       role: created.role,
+      isActive: created.isActive,
     };
   }
   public async findByUsername(username: string): Promise<User | null> {
@@ -46,7 +48,18 @@ export class UserService {
     });
   }
 
-  async findAll(): Promise<User[]> {
+  public async findAll(): Promise<User[]> {
     return this.userRepository.find();
+  }
+
+  public async disableUser(id: number): Promise<DeleteConfirmationDto> {
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    user.isActive = !user.isActive;
+    const updateUserProfile = await this.userRepository.save(user);
+    return {
+      id: updateUserProfile.id,
+      deleted: true,
+      object: 'User',
+    };
   }
 }
