@@ -53,8 +53,17 @@ export class UserService {
   }
 
   public async disableUser(id: number): Promise<DeleteConfirmationDto> {
-    const user = await this.userRepository.findOne({ where: { id: id } });
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+      relations: {
+        likes: true,
+        comments: true,
+      },
+    });
+
     user.isActive = !user.isActive;
+    user.comments.forEach((com) => (com.isActive = false));
+    user.likes.forEach((like) => (like.isActive = false));
     const updateUserProfile = await this.userRepository.save(user);
     return {
       id: updateUserProfile.id,
