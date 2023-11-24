@@ -7,7 +7,10 @@ import { User } from './User.entity';
 export class Comment extends Base {
   @Column({ type: 'text' })
   comment: string;
-  @ManyToOne(() => User, (user) => user.comments, { onUpdate: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.comments, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   author: User;
   @Column()
   tutorialId: number;

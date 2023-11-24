@@ -5,6 +5,7 @@ import {
   Request,
   Put,
   Param,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -66,7 +67,7 @@ export class AdminController {
     type: DeleteConfirmationDto,
   })
   @ApiOperation({
-    summary: "Active ou desactive l'utilisateur",
+    summary: "Desactive l'utilisateur",
   })
   @Role(UserRole.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -76,5 +77,39 @@ export class AdminController {
     @Param('id') id: number,
   ): Promise<DeleteConfirmationDto> {
     return this.adminService.disableUser(id);
+  }
+
+  @Put('comment/:id')
+  @ApiParam({
+    name: 'id',
+    description: 'id du commentaire',
+  })
+  @ApiCreatedResponse({
+    type: DeleteConfirmationDto,
+  })
+  @ApiOperation({
+    summary: 'Desactive le commentaire',
+  })
+  @Role(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiSecurity('JWT-Auth')
+  public async disableComment(
+    @Request() req,
+    @Param('id') id: number,
+  ): Promise<DeleteConfirmationDto> {
+    return this.adminService.disableComment(id);
+  }
+
+  @Delete('database')
+  @Role(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiSecurity('JWT-Auth')
+  @ApiOperation({
+    summary: 'Nettoyage de la base de donnée',
+    description:
+      'Vide les entre de la base de donnee (utilisateur/like/comment) qui sont en status inactif',
+  })
+  public async clearDatabase(@Request() req): Promise<any> {
+    return this.adminService.clearDatabase();
   }
 }

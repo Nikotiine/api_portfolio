@@ -98,4 +98,15 @@ export class CommentService {
       },
     });
   }
+
+  async deleteCommentByAdmin(id: number): Promise<DeleteConfirmationDto> {
+    const comment = await this.commentRepository.findOne({ where: { id: id } });
+    comment.isActive = false;
+    const deleted = await this.commentRepository.save(comment);
+    return {
+      id: deleted.id,
+      deleted: true,
+      object: 'Comment',
+    };
+  }
 }

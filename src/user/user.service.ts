@@ -71,4 +71,8 @@ export class UserService {
       object: 'User',
     };
   }
+
+  public async clearInactiveUser(): Promise<any> {
+    return this.userRepository.delete({ isActive: false });
+  }
 }

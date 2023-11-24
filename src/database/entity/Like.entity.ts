@@ -8,6 +8,9 @@ export class Like extends Base {
   @Column()
   tutorialId: number;
 
-  @ManyToOne(() => User, (user) => user.likes, { onUpdate: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.likes, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   user: User;
 }

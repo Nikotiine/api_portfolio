@@ -41,4 +41,12 @@ export class AdminService {
   public async disableUser(id: number): Promise<DeleteConfirmationDto> {
     return await this.userService.disableUser(id);
   }
+
+  public async disableComment(id: number): Promise<DeleteConfirmationDto> {
+    return await this.commentService.deleteCommentByAdmin(id);
+  }
+
+  public async clearDatabase(): Promise<any> {
+    return this.userService.clearInactiveUser();
+  }
 }
