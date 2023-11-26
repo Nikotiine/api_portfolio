@@ -16,27 +16,35 @@ export class LikeService {
    * Si le like est deja existant en bdd, change son attribut isActive (bolleen) sur le stauts opoposé
    * @param like le like emis sous forme de LikeCreateDto
    */
-  public async create(like: LikeCreateDto): Promise<LikeDto> {
-    const isExist: Like = await this.likeRepository.findOneBy({
-      tutorialId: like.tutorialId,
-      user: {
-        id: like.user.id,
+  public async create(like: LikeCreateDto): Promise<LikeDto[]> {
+    const isExist: Like = await this.likeRepository.findOne({
+      where: {
+        tutorialId: like.tutorialId,
+        user: {
+          id: like.user.id,
+        },
+      },
+      relations: {
+        user: true,
       },
     });
+
     let created: Like = null;
     if (isExist) {
-      isExist.isActive = !isExist.isActive;
+      isExist.isActive = like.isActive;
       created = await this.likeRepository.save(isExist);
     } else {
       const newEntity: Like = this.likeRepository.create(like);
       created = await this.likeRepository.save(newEntity);
     }
-
-    return {
-      id: created.id,
-      tutorialId: created.tutorialId,
-      user: created.user,
-    };
+    return this.likeRepository.find({
+      where: {
+        tutorialId: created.tutorialId,
+      },
+      relations: {
+        user: true,
+      },
+    });
   }
 
   /**
@@ -56,7 +64,19 @@ export class LikeService {
         id: like.id,
         tutorialId: like.tutorialId,
         user: like.user,
+        isActive: like.isActive,
       };
+    });
+  }
+
+  public async findByTutorial(id: number): Promise<LikeDto[]> {
+    return await this.likeRepository.find({
+      where: {
+        tutorialId: id,
+      },
+      relations: {
+        user: true,
+      },
     });
   }
 }

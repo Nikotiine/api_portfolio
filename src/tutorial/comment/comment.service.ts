@@ -109,4 +109,13 @@ export class CommentService {
       object: 'Comment',
     };
   }
+
+  public async findByTutorial(id: number): Promise<CommentDto[]> {
+    return this.commentRepository.find({
+      where: {
+        tutorialId: id,
+        isActive: true,
+      },
+    });
+  }
 }

@@ -6,4 +6,6 @@ export class LikeCreateDto {
   tutorialId: number;
   @ApiProperty()
   user: UserProfileDto;
+  @ApiProperty()
+  isActive: boolean;
 }

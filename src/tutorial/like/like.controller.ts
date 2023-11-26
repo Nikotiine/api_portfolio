@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
@@ -22,21 +23,21 @@ export class LikeController {
     type: LikeCreateDto,
   })
   @ApiOperation({
-    summary: "Post d'un like tutorials",
+    summary: "Post d'un like",
     description: "Mettre ou supprimer un like d'un tutorial",
   })
   @ApiCreatedResponse({
-    type: LikeDto,
+    type: [LikeDto],
     description:
       'Pour voir la description de la reponse merci de regarder dans les DTO => LikeDto',
   })
-  public async likeTutorial(@Body() like: LikeCreateDto): Promise<LikeDto> {
+  public async likeTutorial(@Body() like: LikeCreateDto): Promise<LikeDto[]> {
     return this.likeService.create(like);
   }
 
   @Get('tutorials')
   @ApiOperation({
-    summary: "Get all l' des likes",
+    summary: 'Get all  des likes',
     description: 'Recupere en bdd tout les likes actifs des tutoriels',
   })
   @ApiCreatedResponse({
@@ -46,5 +47,22 @@ export class LikeController {
   })
   public async getAllLikesOfTutorials(): Promise<LikeDto[]> {
     return this.likeService.findAllLikesOfTutorials();
+  }
+
+  @Get('tutorial/:id')
+  @ApiOperation({
+    summary: 'Renvoie les like par tuto',
+  })
+  @ApiCreatedResponse({
+    type: [LikeDto],
+    description:
+      'Pour voir la description de la reponse merci de regarder dans les DTO => LikeDto',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id du tuto',
+  })
+  public async getLikeByTutorial(@Param('id') id: number): Promise<LikeDto[]> {
+    return this.likeService.findByTutorial(id);
   }
 }

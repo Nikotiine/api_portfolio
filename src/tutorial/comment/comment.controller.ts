@@ -45,7 +45,7 @@ export class CommentController {
     return this.commentService.create(comment);
   }
 
-  @Get('tutorial/:id')
+  @Get('tutorials')
   @ApiCreatedResponse({
     type: [CommentDto],
     description:
@@ -55,8 +55,29 @@ export class CommentController {
     summary: 'Retourne les commentaires',
     description: 'Renvoie tous les commentaires actif des tutoriels',
   })
-  public async findCommentForTutorial(): Promise<CommentDto[]> {
+  public async getAllCommentsOfTutorial(): Promise<CommentDto[]> {
     return this.commentService.findAllActives();
+  }
+
+  @Get('tutorial/:id')
+  @ApiParam({
+    name: 'id',
+    description: 'Id du tutoriel',
+  })
+  @ApiCreatedResponse({
+    type: [CommentDto],
+    description:
+      'Pour voir la description de la reponse merci de regarder dans les DTO => CommentDto',
+  })
+  @ApiOperation({
+    summary: 'Retourne les commentaires',
+    description:
+      'Renvoie tous les commentaires actif du tutoriel passer en param',
+  })
+  public async getCommentsByTutorial(
+    @Param('id') id: number,
+  ): Promise<CommentDto[]> {
+    return this.commentService.findByTutorial(id);
   }
 
   @Delete('tutorial/:id')
