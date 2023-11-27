@@ -68,15 +68,4 @@ export class LikeService {
       };
     });
   }
-
-  public async findByTutorial(id: number): Promise<LikeDto[]> {
-    return await this.likeRepository.find({
-      where: {
-        tutorialId: id,
-      },
-      relations: {
-        user: true,
-      },
-    });
-  }
 }

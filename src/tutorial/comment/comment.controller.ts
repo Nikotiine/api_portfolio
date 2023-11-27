@@ -20,7 +20,6 @@ import { CommentDto } from '../../dto/Comment.dto';
 import { CommentCreateDto } from '../../dto/CommentCreate.dto';
 import { JwtAuthGuard } from '../../authentication/strategy/jwt-auth.guard';
 import { CommentService } from './comment.service';
-import { DeleteConfirmationDto } from '../../dto/DeleteConfirmation.dto';
 
 @Controller('api/comment')
 @ApiTags('Comment')
@@ -28,7 +27,7 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
   @Post('tutorial')
   @ApiCreatedResponse({
-    type: CommentDto,
+    type: [CommentDto],
     description:
       'Pour voir la description de la reponse merci de regarder dans les DTO => CommentDto',
   })
@@ -41,7 +40,7 @@ export class CommentController {
   @ApiSecurity('JWT-Auth')
   public async newComment(
     @Body() comment: CommentCreateDto,
-  ): Promise<CommentDto> {
+  ): Promise<CommentDto[]> {
     return this.commentService.create(comment);
   }
 
@@ -59,30 +58,9 @@ export class CommentController {
     return this.commentService.findAllActives();
   }
 
-  @Get('tutorial/:id')
-  @ApiParam({
-    name: 'id',
-    description: 'Id du tutoriel',
-  })
-  @ApiCreatedResponse({
-    type: [CommentDto],
-    description:
-      'Pour voir la description de la reponse merci de regarder dans les DTO => CommentDto',
-  })
-  @ApiOperation({
-    summary: 'Retourne les commentaires',
-    description:
-      'Renvoie tous les commentaires actif du tutoriel passer en param',
-  })
-  public async getCommentsByTutorial(
-    @Param('id') id: number,
-  ): Promise<CommentDto[]> {
-    return this.commentService.findByTutorial(id);
-  }
-
   @Delete('tutorial/:id')
   @ApiCreatedResponse({
-    type: DeleteConfirmationDto,
+    type: [CommentDto],
     description:
       "Message de confirmation de suppersion de l'objet. Pour plus de detail DTO => DeleteConfirmationDto",
   })
@@ -95,7 +73,7 @@ export class CommentController {
   public async deleteComment(
     @Request() req,
     @Param('id') id: number,
-  ): Promise<DeleteConfirmationDto> {
+  ): Promise<CommentDto[]> {
     return this.commentService.delete(req.user.id, id);
   }
 }

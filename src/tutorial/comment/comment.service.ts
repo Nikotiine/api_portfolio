@@ -15,23 +15,25 @@ export class CommentService {
 
   /**
    * Sauvegarde le nouveau commentaire
+   * retourne la liste des tous les commentaire qui on le status actifs
    * @param comment Objet commentCreateDto
    */
-  public async create(comment: CommentCreateDto): Promise<CommentDto> {
+  public async create(comment: CommentCreateDto): Promise<CommentDto[]> {
     const entity: Comment = this.commentRepository.create(comment);
     const newComment: Comment = await this.commentRepository.save(entity);
-    return {
-      id: newComment.id,
-      tutorialId: newComment.tutorialId,
-      comment: newComment.comment,
-      createdAt: newComment.createdAt,
-      author: newComment.author,
-      isActive: newComment.isActive,
-    };
+    return this.commentRepository.find({
+      where: {
+        tutorialId: newComment.tutorialId,
+        isActive: true,
+      },
+      relations: {
+        author: true,
+      },
+    });
   }
 
   /**
-   * Retourne tous le commentaires actifs
+   * Retourne tous les commentaires actifs
    */
   public async findAllActives(): Promise<CommentDto[]> {
     const comments: Comment[] = await this.commentRepository.find({
@@ -58,25 +60,31 @@ export class CommentService {
   }
 
   /**
-   * Supprime le commentaire
+   * Supprime le commentaire et verifie que l'utilisateur est bien l'auteur du commentaire
+   * Retroune la liste des commentaires qui ont un status actifs
    * @param userId id de l'auteur du commentaire
    * @param id id du commentaire a supprimer
    */
-  public async delete(
-    userId: number,
-    id: number,
-  ): Promise<DeleteConfirmationDto> {
+  public async delete(userId: number, id: number): Promise<CommentDto[]> {
     const comment: Comment = await this.findById(id);
     if (comment.author.id !== userId) {
       throw new UnauthorizedException('004');
     }
     comment.isActive = false;
     const deleted: Comment = await this.commentRepository.save(comment);
-    return {
-      id: deleted.id,
-      deleted: true,
-      object: 'Comment',
-    };
+    if (deleted) {
+      return this.commentRepository.find({
+        where: {
+          tutorialId: deleted.tutorialId,
+          isActive: true,
+        },
+        relations: {
+          author: true,
+        },
+      });
+    } else {
+      throw new UnauthorizedException('004');
+    }
   }
 
   // Retrourne le commentaire avec son id
@@ -91,6 +99,9 @@ export class CommentService {
     });
   }
 
+  /**
+   * Retourne tous les commentaires / reserver a l'admin
+   */
   public async findAll(): Promise<Comment[]> {
     return this.commentRepository.find({
       relations: {
@@ -99,6 +110,10 @@ export class CommentService {
     });
   }
 
+  /**
+   * Permet à l'admin de supprimer n'importe quel commentaire
+   * @param id du commentaire
+   */
   async deleteCommentByAdmin(id: number): Promise<DeleteConfirmationDto> {
     const comment = await this.commentRepository.findOne({ where: { id: id } });
     comment.isActive = false;
@@ -108,14 +123,5 @@ export class CommentService {
       deleted: true,
       object: 'Comment',
     };
-  }
-
-  public async findByTutorial(id: number): Promise<CommentDto[]> {
-    return this.commentRepository.find({
-      where: {
-        tutorialId: id,
-        isActive: true,
-      },
-    });
   }
 }
