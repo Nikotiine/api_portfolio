@@ -1,10 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from '../../database/entity/Comment.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CommentCreateDto } from '../../dto/CommentCreate.dto';
 import { CommentDto } from '../../dto/Comment.dto';
-import { DeleteConfirmationDto } from '../../dto/DeleteConfirmation.dto';
 
 @Injectable()
 export class CommentService {
@@ -114,14 +113,13 @@ export class CommentService {
    * Permet à l'admin de supprimer n'importe quel commentaire
    * @param id du commentaire
    */
-  async deleteCommentByAdmin(id: number): Promise<DeleteConfirmationDto> {
+  async deleteCommentByAdmin(id: number): Promise<Comment> {
     const comment = await this.commentRepository.findOne({ where: { id: id } });
     comment.isActive = false;
-    const deleted = await this.commentRepository.save(comment);
-    return {
-      id: deleted.id,
-      deleted: true,
-      object: 'Comment',
-    };
+    return await this.commentRepository.save(comment);
+  }
+
+  async clearInactiveComments(): Promise<DeleteResult> {
+    return this.commentRepository.delete({ isActive: false });
   }
 }

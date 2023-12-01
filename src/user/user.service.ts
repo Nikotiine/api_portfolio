@@ -1,10 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../database/entity/User.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { UserProfileDto } from '../dto/UserProfile.dto';
-import { DeleteConfirmationDto } from '../dto/DeleteConfirmation.dto';
 
 @Injectable()
 export class UserService {
@@ -52,7 +51,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  public async disableUser(id: number): Promise<DeleteConfirmationDto> {
+  public async disableUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id: id },
       relations: {
@@ -64,15 +63,10 @@ export class UserService {
     user.isActive = !user.isActive;
     user.comments.forEach((com) => (com.isActive = false));
     user.likes.forEach((like) => (like.isActive = false));
-    const updateUserProfile = await this.userRepository.save(user);
-    return {
-      id: updateUserProfile.id,
-      deleted: true,
-      object: 'User',
-    };
+    return await this.userRepository.save(user);
   }
 
-  public async clearInactiveUser(): Promise<any> {
+  public async clearInactiveUser(): Promise<DeleteResult> {
     return this.userRepository.delete({ isActive: false });
   }
 }

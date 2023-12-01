@@ -3,7 +3,7 @@ import { UserService } from '../user/user.service';
 import { UserProfileDto } from '../dto/UserProfile.dto';
 import { CommentService } from '../tutorial/comment/comment.service';
 import { CommentDto } from '../dto/Comment.dto';
-import { DeleteConfirmationDto } from '../dto/DeleteConfirmation.dto';
+import { ClearDatabaseResultDto } from '../dto/ClearDatabaseResult.dto';
 
 @Injectable()
 export class AdminService {
@@ -38,15 +38,22 @@ export class AdminService {
     });
   }
 
-  public async disableUser(id: number): Promise<DeleteConfirmationDto> {
-    return await this.userService.disableUser(id);
+  public async disableUser(id: number): Promise<UserProfileDto[]> {
+    await this.userService.disableUser(id);
+    return this.findAllUsers();
   }
 
-  public async disableComment(id: number): Promise<DeleteConfirmationDto> {
-    return await this.commentService.deleteCommentByAdmin(id);
+  public async disableComment(id: number): Promise<CommentDto[]> {
+    await this.commentService.deleteCommentByAdmin(id);
+    return this.findAllComments();
   }
 
-  public async clearDatabase(): Promise<any> {
-    return this.userService.clearInactiveUser();
+  public async clearDatabase(): Promise<ClearDatabaseResultDto> {
+    await this.commentService.clearInactiveComments();
+    await this.userService.clearInactiveUser();
+    return {
+      users: await this.findAllUsers(),
+      comments: await this.findAllComments(),
+    };
   }
 }

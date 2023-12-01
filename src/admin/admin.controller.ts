@@ -21,7 +21,7 @@ import { JwtAuthGuard } from '../authentication/strategy/jwt-auth.guard';
 import { RoleGuard } from '../authentication/strategy/role.guard';
 import { UserRole } from '../enum/UserRole.enum';
 import { Role } from '../authentication/strategy/role.decorator';
-import { DeleteConfirmationDto } from '../dto/DeleteConfirmation.dto';
+import { ClearDatabaseResultDto } from '../dto/ClearDatabaseResult.dto';
 
 @Controller('api/admin')
 @ApiTags('Admin')
@@ -64,7 +64,7 @@ export class AdminController {
     description: "id de l' utilisateur",
   })
   @ApiCreatedResponse({
-    type: DeleteConfirmationDto,
+    type: [UserProfileDto],
   })
   @ApiOperation({
     summary: "Desactive l'utilisateur",
@@ -75,7 +75,7 @@ export class AdminController {
   public async disableUser(
     @Request() req,
     @Param('id') id: number,
-  ): Promise<DeleteConfirmationDto> {
+  ): Promise<UserProfileDto[]> {
     return this.adminService.disableUser(id);
   }
 
@@ -85,7 +85,7 @@ export class AdminController {
     description: 'id du commentaire',
   })
   @ApiCreatedResponse({
-    type: DeleteConfirmationDto,
+    type: [CommentDto],
   })
   @ApiOperation({
     summary: 'Desactive le commentaire',
@@ -96,7 +96,7 @@ export class AdminController {
   public async disableComment(
     @Request() req,
     @Param('id') id: number,
-  ): Promise<DeleteConfirmationDto> {
+  ): Promise<CommentDto[]> {
     return this.adminService.disableComment(id);
   }
 
@@ -109,7 +109,10 @@ export class AdminController {
     description:
       'Vide les entre de la base de donnee (utilisateur/like/comment) qui sont en status inactif',
   })
-  public async clearDatabase(@Request() req): Promise<any> {
+  @ApiCreatedResponse({
+    type: ClearDatabaseResultDto,
+  })
+  public async clearDatabase(@Request() req): Promise<ClearDatabaseResultDto> {
     return this.adminService.clearDatabase();
   }
 }
