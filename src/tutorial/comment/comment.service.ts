@@ -119,6 +119,9 @@ export class CommentService {
     return await this.commentRepository.save(comment);
   }
 
+  /**
+   * Supprime definitevment tout les commentaires qui ont un status isActive a false
+   */
   async clearInactiveComments(): Promise<DeleteResult> {
     return this.commentRepository.delete({ isActive: false });
   }

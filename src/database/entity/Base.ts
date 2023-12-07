@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+// Base de toutes les entites
 export class Base {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;

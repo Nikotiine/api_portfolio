@@ -1,18 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class MailDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Prenom',
+  })
   firstName: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Nom',
+  })
   lastName: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Recrutement',
+  })
   object: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'nom.prenom@email.com',
+  })
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'un message',
+  })
   message: string;
 }

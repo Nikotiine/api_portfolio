@@ -1,8 +1,8 @@
 {
   "name": "api_portfolio",
-  "version": "0.1.4",
+  "version": "0.2",
   "description": "",
-  "author": "",
+  "author": "Nicolas Godin",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

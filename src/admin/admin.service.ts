@@ -12,6 +12,9 @@ export class AdminService {
     private readonly commentService: CommentService,
   ) {}
 
+  /**
+   * Retourne tous les utilisateurs en bdd actifs ou non
+   */
   public async findAllUsers(): Promise<UserProfileDto[]> {
     const users = await this.userService.findAll();
     return users.map((user) => {
@@ -24,6 +27,9 @@ export class AdminService {
     });
   }
 
+  /**
+   * Retourne tous les commentaires actifs ou non
+   */
   public async findAllComments(): Promise<CommentDto[]> {
     const comments = await this.commentService.findAll();
     return comments.map((comment) => {
@@ -38,16 +44,27 @@ export class AdminService {
     });
   }
 
+  /**
+   * Desactive l'utilisateur / retourne la liste des utilisateurs
+   * @param id de l'utilisateur
+   */
   public async disableUser(id: number): Promise<UserProfileDto[]> {
     await this.userService.disableUser(id);
     return this.findAllUsers();
   }
 
+  /**
+   * Desactiove le commentaire / retourne la liste des commentaires
+   * @param id du commentaire
+   */
   public async disableComment(id: number): Promise<CommentDto[]> {
     await this.commentService.deleteCommentByAdmin(id);
     return this.findAllComments();
   }
 
+  /**
+   * Nettoye la base de donnee des comentaire et des utilisateur en status inactif
+   */
   public async clearDatabase(): Promise<ClearDatabaseResultDto> {
     await this.commentService.clearInactiveComments();
     await this.userService.clearInactiveUser();

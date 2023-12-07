@@ -65,6 +65,7 @@ export class AdminController {
   })
   @ApiCreatedResponse({
     type: [UserProfileDto],
+    description: 'Retourne la liste de tous les utilisateurs',
   })
   @ApiOperation({
     summary: "Desactive l'utilisateur",
@@ -86,6 +87,7 @@ export class AdminController {
   })
   @ApiCreatedResponse({
     type: [CommentDto],
+    description: 'Retourne la liste de tous les commentaires',
   })
   @ApiOperation({
     summary: 'Desactive le commentaire',

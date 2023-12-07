@@ -2,10 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserProfileDto } from './UserProfile.dto';
 
 export class LikeCreateDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 1,
+  })
   tutorialId: number;
   @ApiProperty()
   user: UserProfileDto;
-  @ApiProperty()
+  @ApiProperty({ example: true })
   isActive: boolean;
 }

@@ -11,6 +11,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
+  /**
+   * Creation d'un nouveau profil utilisateur
+   * @param user UserProfileDto
+   */
   public async createUser(user: UserRegisterDto): Promise<UserProfileDto> {
     const isExist = await this.userRepository.findOne({
       where: {
@@ -34,12 +38,22 @@ export class UserService {
       isActive: created.isActive,
     };
   }
+
+  /**
+   * Retourne le profil utilisateur par son username et si il est actif en bdd
+   * @param username String
+   */
   public async findByUsername(username: string): Promise<User | null> {
     return this.userRepository.findOneBy({
       username: username,
       isActive: true,
     });
   }
+
+  /**
+   * Retourne l'objet User si il est actif en bdd
+   * @param id de l'utilisateur
+   */
   public async findById(id: number): Promise<User> {
     return this.userRepository.findOneBy({
       id: id,
@@ -47,10 +61,17 @@ export class UserService {
     });
   }
 
+  /**
+   * Renvoie la liste de tous les utilisateurs actif ou non
+   */
   public async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
+  /**
+   * Desactive l'utlisateur en passant son status isActive a false
+   * @param id l'utlisateur
+   */
   public async disableUser(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id: id },
@@ -66,6 +87,9 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
+  /**
+   * Supprime definitevment tout les utilisateurs qui ont un status isActive a false
+   */
   public async clearInactiveUser(): Promise<DeleteResult> {
     return this.userRepository.delete({ isActive: false });
   }

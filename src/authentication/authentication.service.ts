@@ -28,6 +28,10 @@ export class AuthenticationService {
     };
   }
 
+  /**
+   * Retourne le profil de l utilisateur
+   * @param id de l utilisateur
+   */
   public async getProfile(id: number): Promise<any> {
     return this.userService.findById(id);
   }

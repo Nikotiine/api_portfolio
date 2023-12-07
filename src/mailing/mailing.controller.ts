@@ -15,6 +15,8 @@ export class MailingController {
   @Post('contact')
   @ApiBody({
     type: MailDto,
+    description:
+      'Pour voir la description de la reponse merci de regarder dans les DTO => MailDto',
   })
   @ApiOperation({
     summary: 'Post form contact',

@@ -7,6 +7,11 @@ import * as process from 'process';
 export class MailingService {
   constructor(private mailerService: MailerService) {}
 
+  /**
+   * Envoie de l'email de contact
+   * Retourne true ou false si reussite ou echec de l'envoie
+   * @param email MailDto
+   */
   public async sendMail(email: MailDto): Promise<boolean> {
     return this.mailerService
       .sendMail({

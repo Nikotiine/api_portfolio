@@ -2,7 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserProfileDto } from './UserProfile.dto';
 
 export class CommentCreateDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 1,
+  })
   tutorialId: number;
 
   @ApiProperty({
@@ -10,6 +12,8 @@ export class CommentCreateDto {
   })
   author: UserProfileDto;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Merci',
+  })
   comment: string;
 }

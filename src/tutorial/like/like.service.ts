@@ -12,7 +12,7 @@ export class LikeService {
   ) {}
 
   /**
-   * Sauvegarde le like emis par l'utlisateur connecter
+   * Sauvegarde le like emis par l'utilisateur connecté
    * Si le like est deja existant en bdd, change son attribut isActive (bolleen) sur le stauts opoposé
    * @param like le like emis sous forme de LikeCreateDto
    */
@@ -48,7 +48,7 @@ export class LikeService {
   }
 
   /**
-   * Retourne tous les likes actifs pour tout les tutoriels
+   * Retourne tous les likes actifs pour tous les tutoriels
    */
   public async findAllLikesOfTutorials(): Promise<LikeDto[]> {
     const likes: LikeDto[] = await this.likeRepository.find({

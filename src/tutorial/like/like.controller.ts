@@ -23,7 +23,7 @@ export class LikeController {
   })
   @ApiOperation({
     summary: "Post d'un like",
-    description: "Mettre ou supprimer un like d'un tutorial",
+    description: "Activer ou desactiver un like d'un tutoriel",
   })
   @ApiCreatedResponse({
     type: [LikeDto],

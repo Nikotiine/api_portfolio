@@ -2,7 +2,9 @@ import { CommentCreateDto } from './CommentCreate.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CommentDto extends CommentCreateDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 0,
+  })
   id: number;
 
   @ApiProperty({
