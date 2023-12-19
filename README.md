@@ -5,7 +5,11 @@ API pour PortFolio V2
 
 ## Installation
 
-Avoir une base de donnée fonctionelle au prealable
+Avoir une base de donnée fonctionelle au prealable ou utiliser le docker-compose du projet
+```bash
+$ docker-compose up -d
+```
+Attention => docker-compose prevu pour mac sur puce Apple Silicon ARM64
 
 ```bash
 $ npm install
@@ -24,10 +28,12 @@ HOSTNAME=le-nom-du-serveur-de-mail
 CONTACT_PASSWORD=le-password-de-votre-serveur-email
 
 ```
-* Initialiser la base de donnée
+### Initialiser la base de donnée
+* option 1: generer la bdd avec la migration
 ```bash
 npm run db:create
 ```
+* option 2: Creer une base de donnee avec phpMyAdmin et importer le jeu de test fourni dans le dossier sql
 ## Demmarer l'API
 
 ```bash
