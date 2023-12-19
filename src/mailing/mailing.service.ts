@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { MailDto } from '../dto/Mail.dto';
 import * as process from 'process';
+import { CommentDto } from '../dto/Comment.dto';
+import { Comment } from '../database/entity/Comment.entity';
+import { User } from '../database/entity/User.entity';
 
 @Injectable()
 export class MailingService {
@@ -32,5 +35,30 @@ export class MailingService {
       .catch(() => {
         return false;
       });
+  }
+
+  public notifyNewComment(comment: Comment): void {
+    this.mailerService.sendMail({
+      to: process.env.CONTACT_USERNAME,
+      from: process.env.NO_REPLY_ADRESS,
+      subject: 'Nouveau commentaire',
+      html: `<h4> Nouveau commentaire posté par</h4> 
+             <br> 
+             <h2> ${comment.author.username}</h2>
+             <br> 
+             <p> ${comment.comment}</p>
+             <br>`,
+    });
+  }
+
+  public notifyNewUser(user: User): void {
+    this.mailerService.sendMail({
+      to: process.env.CONTACT_USERNAME,
+      from: process.env.NO_REPLY_ADRESS,
+      subject: 'Nouvel utilisateur ',
+      html: `<h4> Nouvel utilisateur enregistré</h4> 
+             <br> 
+             <h2> ${user.username} </h2>`,
+    });
   }
 }

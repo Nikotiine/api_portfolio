@@ -4,12 +4,14 @@ import { Comment } from '../../database/entity/Comment.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CommentCreateDto } from '../../dto/CommentCreate.dto';
 import { CommentDto } from '../../dto/Comment.dto';
+import { MailingService } from '../../mailing/mailing.service';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    private readonly mailingService: MailingService,
   ) {}
 
   /**
@@ -20,6 +22,7 @@ export class CommentService {
   public async create(comment: CommentCreateDto): Promise<CommentDto[]> {
     const entity: Comment = this.commentRepository.create(comment);
     const newComment: Comment = await this.commentRepository.save(entity);
+    this.mailingService.notifyNewComment(newComment);
     return this.commentRepository.find({
       where: {
         tutorialId: newComment.tutorialId,

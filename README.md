@@ -26,6 +26,7 @@ ACCESS_TOKEN_SECRET_KEY=phrase-secrete-pour-token
 CONTACT_USERNAME=votre-email-de-contact
 HOSTNAME=le-nom-du-serveur-de-mail
 CONTACT_PASSWORD=le-password-de-votre-serveur-email
+NO_REPLY_ADRESS=email-no-reply
 
 ```
 ### Initialiser la base de donnée
@@ -34,6 +35,8 @@ CONTACT_PASSWORD=le-password-de-votre-serveur-email
 npm run db:create
 ```
 * option 2: Creer une base de donnee avec phpMyAdmin et importer le jeu de test fourni dans le dossier sql
+* connexion admin : admin - psw : admin
+* connexion user : user - psw :user
 ## Demmarer l'API
 
 ```bash

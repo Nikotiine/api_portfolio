@@ -4,11 +4,13 @@ import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRegisterDto } from '../dto/UserRegister.dto';
 import { UserProfileDto } from '../dto/UserProfile.dto';
+import { MailingService } from '../mailing/mailing.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly mailingService: MailingService,
   ) {}
 
   /**
@@ -30,7 +32,7 @@ export class UserService {
       password: user.password,
     });
     const created = await this.userRepository.save(entity);
-
+    this.mailingService.notifyNewUser(created);
     return {
       id: created.id,
       username: created.username,

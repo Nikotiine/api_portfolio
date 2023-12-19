@@ -21,5 +21,6 @@ import * as process from 'process';
       }),
     }),
   ],
+  exports: [MailingService],
 })
 export class MailingModule {}
