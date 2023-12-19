@@ -36,6 +36,11 @@ export class CommentController {
     description:
       'Pour voir la connaitre le body merci de regarder dans les DTO => CommentCreateDto',
   })
+  @ApiOperation({
+    summary: "Post d'un commentaire",
+    description:
+      'Ajoute un nouveau commentaire au tutoriel concerne (id du tuto passé dans le body)',
+  })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')
   public async newComment(
@@ -51,7 +56,7 @@ export class CommentController {
       'Pour voir la description de la reponse merci de regarder dans les DTO => CommentDto',
   })
   @ApiOperation({
-    summary: 'Retourne les commentaires',
+    summary: 'Get_All des commentaires',
     description: 'Renvoie tous les commentaires actif des tutoriels',
   })
   public async getAllCommentsOfTutorial(): Promise<CommentDto[]> {
@@ -61,12 +66,14 @@ export class CommentController {
   @Delete('tutorial/:id')
   @ApiCreatedResponse({
     type: [CommentDto],
-    description:
-      "Message de confirmation de suppersion de l'objet. Pour plus de detail DTO => DeleteConfirmationDto",
+    description: 'Retourne la liste de tous les commentaire en status actif',
   })
   @ApiParam({
     name: 'id',
-    description: 'Id du commentaire de tutoriel a supprimer',
+    description: 'Id du commentaire de tutoriel à supprimer',
+  })
+  @ApiOperation({
+    summary: 'Supression du commentaire',
   })
   @UseGuards(JwtAuthGuard)
   @ApiSecurity('JWT-Auth')

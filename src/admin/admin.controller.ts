@@ -49,10 +49,12 @@ export class AdminController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiSecurity('JWT-Auth')
   @ApiOperation({
-    summary: 'Retourne tous les commentaires',
+    summary: 'Get_All des commentaires',
   })
   @ApiCreatedResponse({
     type: [CommentDto],
+    description:
+      'Retourne la liste complete des commentaires CommentDto actif ou non  ',
   })
   public async findAllComments(@Request() req): Promise<CommentDto[]> {
     return this.adminService.findAllComments();

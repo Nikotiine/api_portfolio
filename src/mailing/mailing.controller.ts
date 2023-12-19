@@ -19,7 +19,7 @@ export class MailingController {
       'Pour voir la description de la reponse merci de regarder dans les DTO => MailDto',
   })
   @ApiOperation({
-    summary: 'Post form contact',
+    summary: 'Post formulaire de contact',
     description: "Point d'entrée pour l'envoie du formulaire de contact",
   })
   @ApiCreatedResponse({
